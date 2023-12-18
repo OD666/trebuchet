@@ -1,4 +1,4 @@
-var arr1 = [
+var arrStr = [
     "9eightone",
     "hczsqfour3nxm5seven4",
     "9twopjqkghmbone",
@@ -1001,114 +1001,89 @@ var arr1 = [
     "5bszzkpcdxqkvkf7tgcone2"
 ];
 
-// var arr1 = [
-//     // "two1nine", // 29
-//     // "eightwothree", // 83
-//     // "abcone2threexyz", // 13
-//     // "xtwone3four", // 24
-//     // "4nineeightseven2",
-//     // "zoneight234",
-//     // "zneigh",
-//     // "7pqrstsixteen",
+// var arrStr = [
+//     "two1nine", // 29
+//     "eightwothree", // 83
+//     "abcone2threexyz", // 13
+//     "xtwone3four", // 24
+//     "4nineeightseven2",
+//     "zoneight234",
+//     "zneigh", // 0
+//     "7pqrstsixteen",
 //     // // In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76. Adding these together produces 281.
 
 //     // "ninetwonine234nvtlzxzcninezx", // 9292349
-//     "ninetwoninetwone34twone", // 9292342
+//     // "ninetwoninetwone34twone", // 9292342
+//     // "zfxbzhczcx9eightwockk" // 92
 // ];
 
-var arr2 = [];
 
-replaceNumber = function (str) {
-    var newStr = str;
-    var patterns = {
-        'one': 1,
-        'two': 2,
-        'three': 3,
-        'four': 4,
-        'five': 5,
-        'six': 6,
-        'seven': 7,
-        'eight': 8,
-        'nine': 9
-    }
+var arrNum = [];
 
-    var tmp_pattern_name = [];
+var dic = {
+    'one': 1,
+    'two': 2,
+    'three': 3,
+    'four': 4,
+    'five': 5,
+    'six': 6,
+    'seven': 7,
+    'eight': 8,
+    'nine': 9,
 
-    ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'].forEach(function (val) {
-        var rx = new RegExp(val, "ig");
-        var match;
-        while ((match = rx.exec(newStr)) !== null) {
-            tmp_pattern_name.push(rx.lastIndex + ' ' + val);
-        }
-    })
-
-    console.log('tmp_pattern_name ', tmp_pattern_name)  // [ '3 one', '1 two', '7 four' ]
-
-    var tmp_pattern_idx = [];
-    tmp_pattern_name.forEach(function (val) {
-        var arrVal = val.split(' ').map(function (i) {
-            return i.trim();
-        });
-        tmp_pattern_idx.push(parseInt(arrVal[0]));
-    })
-
-    tmp_pattern_idx = tmp_pattern_idx.sort(function (a, b) {
-        return a - b;
-    });
-
-    // console.log(tmp_pattern_idx) // [ 1, 3, 7 
-
-    tmp_pattern_name.forEach(function (valName) {
-        var startPos = tmp_pattern_idx[0] + ' ';
-        if (valName.startsWith(startPos)) {
-            valName = valName.replace(/[0-9]+ /, '')
-            newStr = newStr.replace(valName, patterns[valName])
-        }
-    })
-
-    console.log('newStr ', newStr)
-
-    if (newStr != str) {
-        newStr = replaceNumber(newStr);
-    }
-
-    return newStr;
+    'eno': 1,
+    'owt': 2,
+    'eerht': 3,
+    'ruof': 4,
+    'evif': 5,
+    'xis': 6,
+    'neves': 7,
+    'thgie': 8,
+    'enin': 9,
 }
 
-///////////////////////
+var rx1 = /1|2|3|4|5|6|7|8|9|one|two|three|four|five|six|seven|eight|nine/i;
+var rx2 = /1|2|3|4|5|6|7|8|9|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin/i;
 
-arr1.forEach(function (item) {
-    console.log('  ')
-    console.log('item = ', item)
 
-    var newItem = item;
-    newItem = replaceNumber(newItem);
-    newItem = newItem.replace(/[a-z]/ig, '')
-    // console.log('newItem ', newItem)
+findNumber = function (str, rx) {
+    var number = '';
+    var subStr = '';
 
-    var numbers;
-    if (newItem.length && newItem.length > 2) {
-        console.log('длина больше двух ', newItem)
-        numbers = newItem[0] + newItem[newItem.length - 1]
-    } else if (newItem.length && newItem.length == 1) {
-        console.log('длина равна одному ', newItem)
-        numbers = newItem + newItem;
-    } else {
-        numbers = newItem || 0;
+    for (let i = 0; (match = rx.exec(subStr)) == null; i++) {
+        subStr = str.substring(0, i);
+        if (i == str.length + 1) {
+            break;
+        }
+    }
+    console.log('subStr =', subStr)
+
+    match = rx.exec(subStr);
+    if (match) {
+        number = dic[match[0]] || match[0];
     }
 
-    arr2.push(parseInt(numbers));
-    console.log('numbers ', numbers)
+    return number;
+}
+
+arrStr.forEach(function (str) {
+    console.log('  ')
+    console.log('str =', str)
+
+    var number1 = findNumber(str, rx1);
+
+    var str2 = str.split('').reverse().join('');
+    var number2 = findNumber(str2, rx2);
+
+    arrNum.push(parseInt(number1 + '' + number2) || 0);
+    console.log('arrNum =', arrNum)
 })
 
-// console.log('arr2 ', arr2)
-
 var sum = 0;
-arr2.forEach(function (val) {
+arrNum.forEach(function (val) {
     sum += val;
 });
 
 console.log(sum);
-// 55477 - ответ первой части (правильный)
-// 53941, 54427, 54408, 54414 - ответ второй части (НЕ правильный)
-// 
+// 55477 - ответ первой части (1й день)
+// 54431 - ответ второй части (1й день)
