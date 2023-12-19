@@ -1075,8 +1075,10 @@ arrStr.forEach(function (str) {
     var str2 = str.split('').reverse().join('');
     var number2 = findNumber(str2, rx2);
 
+    console.log('number =', number1 + '' + number2)
+
     arrNum.push(parseInt(number1 + '' + number2) || 0);
-    console.log('arrNum =', arrNum)
+    // console.log('arrNum =', arrNum)
 })
 
 var sum = 0;
